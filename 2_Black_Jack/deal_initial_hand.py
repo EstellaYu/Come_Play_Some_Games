@@ -15,21 +15,39 @@ def deal_initial_hand(num_players, deck_of_card, draw_ind):
 		initial_hand.append(hand)
 	return [initial_hand, deck_of_card, draw_ind]
 
-def initial_pt(initial_hand):
+"""-----------------------------------------------------------------------
+# a point calculator for a player's hand 
+	function 1. inputs the hand of the player, 
+ 			 2. identify what card is it
+ 			 3. calculate points
+-----------------------------------------------------------------------"""
+def pt_calculator(hand):
 	pt = []
-	for i in range(len(initial_hand)):
-		pt1 = initial_hand[i][0][1:] # order of the 1st card
-		pt2 = initial_hand[i][1][1:] # order of the 2nd card
+	ace = False
 
-		if pt1 in ['J','Q','K']:
-			pt1 = 10
+	for i in range(len(hand)):
+		pt_temp = hand[i][1:] # order of the 1st card
+	
+		if pt_temp in ['J','Q','K']:
+			pt_temp = 10
+		elif pt_temp == 'A':
+			pt_temp = 1
+			ace = True
 		else: 
-			pt1 = int(pt1)
+			pt_temp = int(pt_temp)
 
-		if pt2 in ['J','Q','K']:
-			pt2 = 10
-		else: 
-			pt2 = int(pt2)
+		pt.append(pt_temp)
 
-		pt.append((pt1+pt2))
-	return pt
+	if ace and (sum(pt) + 10 <= 21):
+		return [sum(pt), sum(pt) + 10]
+	else: 
+		return [sum(pt)]
+
+"""-----------------------------------------------------------------------
+# prints the result from the pt_calculator
+-----------------------------------------------------------------------"""
+def print_pt(pt):
+	if len(pt) == 2:
+		return str(pt[0]) + " or " + str(pt[1])
+	else:
+		return str(pt[0])
